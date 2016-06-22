@@ -1,0 +1,54 @@
+#!/bin/bash
+# SIDC
+# author : Mostafa Asadi
+# url    : http://ma73.ir
+# github : https://github.com/mostafaasadi/sidc/
+# Email  : mostafaasadi73@gmail.com
+#
+# requirement : libfribidi-bin
+# chmod +x sidc
+# ./sidc
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+clear
+
+echo -e "\n\n\t\t\t Search in directory content \n\n\n"
+if [ -z $1 ];then
+	read -p "                       Keyword : " key
+else
+	key=$1
+fi
+
+while getopts "d:h" options;do
+   	case "$options" in
+    	 d)
+	 dir="$OPTARG" ;;
+	 h)
+	 echo -e "\n\t\t\t SIDC
+		  A script to search in dircetory content 
+		\n 
+		requirement : libfribidi-bin ( for rtl file name)
+		\n
+		sidc [keyword] -d [directory to search]
+		* if your keyword contain a space , you should put it in double quotations .
+		* if you don't enter a directory , sidc searches in current dirctory .\n\n"
+	exit	;;
+	esac
+ done
+
+if [ -z $dir ];then
+	dir=$PWD
+fi
+
+echo -e "\n\t\t searching $key in $dir ... \n"
+sleep 1
+find "$dir" -type f -print | xargs grep -I "$key" 2>/dev/null | fribidi && exit
