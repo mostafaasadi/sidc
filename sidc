@@ -34,13 +34,13 @@ while getopts "d:h" options;do
 	 dir="$OPTARG" ;;
 	 h)
 	 echo -e "\n\t\t\t SIDC
-		  A script to search in dircetory content 
+		  A script to search in directory content
 		\n 
 		requirement : libfribidi-bin ( for rtl file name)
 		\n
 		sidc [keyword] -d [directory to search]
 		* if your keyword contain a space , you should put it in double quotations .
-		* if you don't enter a directory , sidc searches in current dirctory .\n\n"
+		* if you don't enter a directory , sidc searches in current directory .\n\n"
 	exit	;;
 	esac
  done
