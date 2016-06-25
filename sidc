@@ -41,11 +41,12 @@ text_function (){
 		 	dir="$OPTARG" ;;
 	 		h)
 	 		echo -e "\n\t\t\t SIDC
-		  A script to search in directory content
+		  A script to search in directory content + GUI
 		\n
-		requirement : libfribidi-bin ( for rtl file name)
+		requirement : libfribidi-bin ( for rtl file name) , zenity (for GUI)
 		\n
-		sidc [keyword] -d [directory to search]
+		sidc -t [keyword] -d [directory to search]
+		* sidc will run GUI , you can use -t for Cli
 		* if your keyword contain a space , you should put it in double quotations .
 		* if you don't enter a directory , sidc searches in current directory .\n\n"
 	exit	;;
