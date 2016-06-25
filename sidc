@@ -5,7 +5,7 @@
 # github : https://github.com/mostafaasadi/sidc/
 # Email  : mostafaasadi73@gmail.com
 #
-# requirement : libfribidi-bin
+# requirement : libfribidi-bin,zenity
 # chmod +x sidc
 # ./sidc
 #
@@ -20,22 +20,29 @@
 # GNU General Public License for more details.
 
 clear
-
-echo -e "\n\n\t\t\t Search in directory content \n\n\n"
-if [ -z $1 ];then
-	read -p "                       Keyword : " key
-else
+# searching in directory content
+searching_function (){
+	echo -e "\n\t\t searching $key in $dir ... \n"
+	sleep 1
+	find "$dir" -type f -print | xargs grep -I "$key" 2>/dev/null | fribidi && echo -e "\n\n\t\t\t All Done !" && exit
+}
+# codes for Cli
+text_function (){
+	echo -e "\n\n\t\t\t Search in directory content \n\n\n"
+	if [ -z $1 ];then
+		read -p "                       Keyword : " key
+	else
 	key=$1
-fi
+	fi
 
-while getopts "d:h" options;do
+	while getopts "d:h" options;do
    	case "$options" in
-    	 d)
-	 dir="$OPTARG" ;;
-	 h)
-	 echo -e "\n\t\t\t SIDC
+  	 	d)
+		 	dir="$OPTARG" ;;
+	 		h)
+	 		echo -e "\n\t\t\t SIDC
 		  A script to search in directory content
-		\n 
+		\n
 		requirement : libfribidi-bin ( for rtl file name)
 		\n
 		sidc [keyword] -d [directory to search]
@@ -45,10 +52,41 @@ while getopts "d:h" options;do
 	esac
  done
 
-if [ -z $dir ];then
-	dir=$PWD
-fi
+	if [ -z $dir ];then
+		dir=$PWD
+	fi
+	searching_function
+}
+# this check user order for Gui or Cli
+while getopts "t" options;do
+	case "$options" in
+		t)
+		text_function;;
+	esac
+done
 
-echo -e "\n\t\t searching $key in $dir ... \n"
-sleep 1
-find "$dir" -type f -print | xargs grep -I "$key" 2>/dev/null | fribidi && exit
+# codes for Gui
+# keyword input
+if key=`zenity --entry \
+--window-icon="$HOME/.icons/sidc.png" \
+--ok-label="Search" \
+--title="SIDC - search in directory content" \
+--text="Enter your keyword " --width 350 `
+  then echo $?
+else echo "No keyword entered !"
+fi
+#directory Select
+dir=`zenity --file-selection --directory --window-icon="$HOME/.icons/sidc.png" \
+ --title="SIDC - Select a Directory" `
+case $? in
+         0)
+                echo "\"$dir\" selected.";;
+         1)
+                echo "No Directory selected.";;
+        -1)
+                echo "An unexpected error has occurred.";;
+esac
+# show result
+echo -e "\n\n\n"
+searching_function |  zenity --text-info --window-icon="$HOME/.icons/sidc.png" \
+--width 800 --height 900
