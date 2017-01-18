@@ -7,7 +7,7 @@ echo -e "\t\t\t please wait...\n"
 sudo cp -f sidc /usr/bin/
 echo -e "\n\t\t* sidc file copied to /user/bin"
 sleep 0.5
-sudo chmod +x sidc
+sudo chmod +x /usr/bin/sidc
 echo -e "\n\t\t* sidc file got permission"
 sleep 0.5
 mkdir $HOME/.icons 2>/dev/null
